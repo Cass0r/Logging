@@ -49,6 +49,9 @@ public void display_items_list(){
         logger.warn("User attempted to view list, but it is empty.");
     } else {
         logger.info("Displaying all items in the to-do list.");
+        for (Items item : item.values()) {
+            logger.info(item.toString());
+        }
     }
 
 }
@@ -70,7 +73,7 @@ do {
     while (true) {
         // Check if the input is an integer
         if (!sc.hasNextInt()) {
-            System.out.println("\nInvalid input. Please enter a number between 1 and 4.");
+            logger.warn("\nInvalid input. Please enter a number between 1 and 4.");
             sc.next(); // Clear the invalid input
         } else {
             option = sc.nextInt(); // Read the input
@@ -79,7 +82,7 @@ do {
             if (option >= 1 && option <= 4) {
                 break;  // Exit the loop if valid input is entered
             } else {
-                System.out.println("Invalid option. Please enter a number between 1 and 4.");
+                logger.warn("Invalid option. Please enter a number between 1 and 4.");
             }
         }
     }
@@ -90,43 +93,43 @@ do {
         //Add
         case 1:
             //Add ID
-            System.out.print("\nEnter the Item ID(up to 5 numbers): ");
+            logger.info("\nEnter the Item ID(up to 5 numbers): ");
             sc.nextLine();
             String id = sc.nextLine();
 
             // Validate ID format
             while (!id.matches("\\d{1,5}")) {
-                System.out.println("Error: ID must be a number with 1 to 5 digits only.");
-                System.out.print("Enter the Item ID (1 to 5 digits): ");
+                logger.error("Error: ID must be a number with 1 to 5 digits only.");
+                logger.info("Enter the Item ID (1 to 5 digits): ");
                 id = sc.nextLine();
             }
 
             // Prompt and validate name
-            System.out.print("Enter the name of the item: ");
+            logger.info("Enter the name of the item: ");
             //sc.nextLine();
             String name = sc.nextLine();
 
             while (name.length() < 1 || name.length() > 15) {
-                System.out.println("Error: name entered had no characters entered, please re-enter proper amount(up to 15 characters.)");
-                System.out.print("Enter Item name: ");
+                logger.warn("Error: name entered had no characters entered, please re-enter proper amount(up to 15 characters.)");
+                logger.info("Enter Item name: ");
                 name = sc.nextLine();
             }
 
             // Prompt and validate description
-            System.out.print("Enter a short description of the item: ");
+            logger.info("Enter a short description of the item: ");
             //sc.nextLine();
             String description = sc.nextLine();
 
             while (description.length() < 1 || description.length() > 50) {
-                System.out.println("Error: short description entered had no characters entered, Please enter below 50 characters.");
-                System.out.print("Enter short description: ");
+                logger.warn("Error: short description entered had no characters entered, Please enter below 50 characters.");
+                logger.info("Enter short description: ");
                 description = sc.nextLine();
             }
 
             // Prompt and validate task status (boolean)
             boolean task_status;
             while (true) {
-                System.out.print("Enter the completion status of the task(true,false): ");
+                logger.info("Enter the completion status of the task(true,false): ");
                 String input = sc.next().trim().toLowerCase();
                 //sc.nextLine();
 
@@ -137,18 +140,18 @@ do {
                     task_status = false;
                     break;  // Exit the loop once a valid boolean is entered
                 } else {
-                    System.out.println("Error: Please enter 'true' or 'false'.");
+                    logger.warn("Error: Please enter 'true' or 'false'.");
                 }
 
             }
             // Add the validated item
-            System.out.println("\nItem has been added.");
+            logger.info("\nItem has been added.");
             Add_Item(new Items(id, name, description, task_status));
             break;
 
         //Delete
         case 2:
-            System.out.print("Enter ID to delete task: ");
+            logger.info("Enter ID to delete task: ");
             sc.nextLine(); // Clear input
             String remove_ID = sc.nextLine();
             Delete_item(remove_ID);
@@ -161,7 +164,7 @@ do {
 
         //close menu
         case 4:
-            System.out.println("Exiting Menu..."); // Continue menu until option 4 is selected (exit)
+            logger.info("Exiting Menu..."); // Continue menu until option 4 is selected (exit)
             break;
 
             }//switch
