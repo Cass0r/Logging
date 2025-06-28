@@ -1,6 +1,8 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 // Class responsible for managing a collection of to-do items and displaying the interactive menu
 public class to_do_item {
@@ -13,16 +15,20 @@ public to_do_item(){
     item = new HashMap<>();
 }
 
+//Integrating logging
+private static final Logger logger = LogManager.getLogger(to_do_item.class);
+
 //----------------------------------------------------------------------------------------------------------------------
 // Method to add a to-do item to the list
 public boolean Add_Item(Items additem){
     // Check if the item already exists by ID
     if (item.containsKey(additem.getID())) {
-        System.out.println("Error: Movie already exists in the collection.");
-        return false; // item already exists
+        logger.warn("Attempted to add duplicate item with ID: " + additem.getID());
+        return false;
     }
     // Add the item to the map
     item.put(additem.getID(), additem);
+    logger.info("Item added successfully with ID: " + additem.getID());
     return true;
 }
 //----------------------------------------------------------------------------------------------------------------------
@@ -30,23 +36,21 @@ public boolean Add_Item(Items additem){
 public boolean Delete_item(String ID){
     // Attempt to remove the item; if null, item was not found
     if (item.remove(ID) == null) {
-        System.out.println("Error: Item not found.");
+        logger.error("Failed to delete item. ID not found: " + ID);
         return false;
     }
-    System.out.println("\nItem has been found and removed from list.");
+    logger.info("Item deleted successfully. ID: " + ID);
     return true;
 }
 //----------------------------------------------------------------------------------------------------------------------
 //* View the to-do items
 public void display_items_list(){
-    if(item.isEmpty()){
-        System.out.println("\nNo items in the to-do list.");
-    }else{
-        // Print each item's details using its toString() method
-        for(Items items : item.values()){
-            System.out.println(items);
-        }
+    if (item.isEmpty()) {
+        logger.warn("User attempted to view list, but it is empty.");
+    } else {
+        logger.info("Displaying all items in the to-do list.");
     }
+
 }
 //----------------------------------------------------------------------------------------------------------------------
 // Method to display and manage the to-do list menu
